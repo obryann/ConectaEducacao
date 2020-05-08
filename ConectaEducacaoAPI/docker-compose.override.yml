@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bryan2010
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+    environment:
+      POSTGRES_LOG_CONN: "Server=db;Port=5432;Database=postgres;User Id=postgres;Password=bryan2010;"
+      LOG_TABLE_NAME: "postgres"
+      LOG_SCHEMA: "public"
+    ports:
+      - 8890:80
+      - 443
+    depends_on:
+      - db
+    networks:
+      - postgres-network
+
+volumes: 
+  pgdata:
+
+networks:
+  postgres-network:

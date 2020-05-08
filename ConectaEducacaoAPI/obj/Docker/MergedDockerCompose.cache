@@ -1,0 +1,35 @@
+networks:
+  postgres-network: {}
+services:
+  api:
+    build:
+      context: C:\Users\MicAc\OneDrive\┴rea de Trabalho\Trabalho\Vivo\Estudos\ConectaEducacao\ConectaEducacaoAPI
+      dockerfile: src/Api/Dockerfile
+    depends_on:
+    - db
+    environment:
+      LOG_SCHEMA: public
+      LOG_TABLE_NAME: postgres
+      POSTGRES_LOG_CONN: Server=db;Port=5432;Database=postgres;User Id=postgres;Password=bryan2010;
+    image: api
+    networks:
+      postgres-network: {}
+    ports:
+    - published: 8890
+      target: 80
+    - target: 443
+  db:
+    environment:
+      POSTGRES_PASSWORD: bryan2010
+      POSTGRES_USER: postgres
+    image: postgres
+    networks:
+      postgres-network: {}
+    ports:
+    - published: 5432
+      target: 5432
+    restart: always
+    volumes:
+    - pgdata:/var/lib/postgresql/data:rw
+version: '3.7'
+volume

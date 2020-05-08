@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+
+volumes: 
+  pgdata:
+
+networks:
+  postgres-network:
